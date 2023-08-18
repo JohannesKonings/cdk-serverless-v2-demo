@@ -1,4 +1,4 @@
-import { App, CfnOutput, Stack, StackProps } from 'aws-cdk-lib';
+import { App, CfnOutput, Stack, StackProps, Tags } from 'aws-cdk-lib';
 import { CognitoAuthentication } from 'cdk-serverless/lib/constructs/authentication';
 import { Construct } from 'constructs';
 import { MyModelDatastore } from './generated/datastore.mymodel-construct.generated';
@@ -22,6 +22,19 @@ export class MyStack extends Stack {
       stageName: 'dev',
       singleTableDatastore: datastore,
       authentication,
+      cors: true,
+    });
+
+    const apiKey = api.api.addApiKey('my-api-key', {});
+    const plan = api.api.addUsagePlan('my-api-usage-plan', {
+      throttle: {
+        rateLimit: 10,
+        burstLimit: 2,
+      },
+    });
+    plan.addApiKey(apiKey);
+    plan.addApiStage({
+      stage: api.api.deploymentStage,
     });
 
     const workflow = new TodoLifecycleWorkflow(this, 'Workflow', {
@@ -49,7 +62,8 @@ const devEnv = {
 
 const app = new App();
 
-new MyStack(app, 'cdk-serverless-v2-demo-dev', { env: devEnv });
-// new MyStack(app, 'cdk-serverless-v2-demo-prod', { env: prodEnv });
+Tags.of(app).add('project', 'cdk-serverless-v2-demo-with-zod');
+
+new MyStack(app, 'cdk-serverless-v2-demo-with-zod-dev', { env: devEnv });
 
 app.synth();

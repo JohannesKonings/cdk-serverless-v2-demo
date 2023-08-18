@@ -29,7 +29,7 @@ export const Schema = {
     "GSI1": {
       "hash": "GSI1PK",
       "sort": "GSI1SK",
-      "project": "ALL"
+      "project": "all"
     },
     "LSI1": {
       "type": "local",
@@ -64,26 +64,35 @@ export const Schema = {
         "type": String,
         "value": "${state}#${title}"
       },
-      "lastUpdated": {
+      "state": {
+        "type": String,
+        "required": true,
+        "enum": [
+          "OPEN",
+          "IN PROGRESS",
+          "DONE"
+        ],
+        "default": "OPEN"
+      },
+      "title": {
         "type": String,
         "required": true
       },
-      "title": {
+      "finishedInDays": {
+        "type": Number,
+        "required": true,
+        "default": 7
+      },
+      "notificationsEmail": {
         "type": String,
         "required": true
       },
       "description": {
         "type": String
       },
-      "state": {
+      "lastUpdated": {
         "type": String,
-        "enum": [
-          "OPEN",
-          "IN PROGRESS",
-          "DONE"
-        ],
-        "required": true,
-        "default": "OPEN"
+        "required": true
       }
     }
   },
@@ -101,7 +110,7 @@ export const table = new Table({
   hidden: false,
 });
 
-export type TodoType = Entity<typeof Schema.models.Todo>
+export type TodoType = Entity<typeof Schema.models.Todo>;
 export const Todo: Model<TodoType> = table.getModel<TodoType>('Todo');
 
 

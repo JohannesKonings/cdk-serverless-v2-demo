@@ -37,7 +37,7 @@
     },
     {
       "name": "aws-cdk",
-      "version": "^2.60.0",
+      "version": "^2.92.0",
       "type": "build"
     },
     {
@@ -92,6 +92,10 @@
       "type": "build"
     },
     {
+      "name": "@asteasolutions/zod-to-openapi",
+      "type": "runtime"
+    },
+    {
       "name": "@aws-sdk/client-dynamodb",
       "type": "runtime"
     },
@@ -101,7 +105,7 @@
     },
     {
       "name": "aws-cdk-lib",
-      "version": "^2.60.0",
+      "version": "^2.92.0",
       "type": "runtime"
     },
     {
@@ -139,6 +143,10 @@
     },
     {
       "name": "uuid",
+      "type": "runtime"
+    },
+    {
+      "name": "zod",
       "type": "runtime"
     }
   ],

@@ -42,26 +42,35 @@
         "type": "string",
         "value": "${state}#${title}"
       },
-      "lastUpdated": {
+      "state": {
+        "type": "string",
+        "required": true,
+        "enum": [
+          "OPEN",
+          "IN PROGRESS",
+          "DONE"
+        ],
+        "default": "OPEN"
+      },
+      "title": {
         "type": "string",
         "required": true
       },
-      "title": {
+      "finishedInDays": {
+        "type": "number",
+        "required": true,
+        "default": 7
+      },
+      "notificationsEmail": {
         "type": "string",
         "required": true
       },
       "description": {
         "type": "string"
       },
-      "state": {
+      "lastUpdated": {
         "type": "string",
-        "enum": [
-          "OPEN",
-          "IN PROGRESS",
-          "DONE"
-        ],
-        "required": true,
-        "default": "OPEN"
+        "required": true
       }
     }
   },

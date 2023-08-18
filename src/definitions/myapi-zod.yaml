@@ -1,0 +1,149 @@
+openapi: 3.0.1
+info:
+  version: '1.0'
+  title: Serverless Demo with zod
+tags:
+  - name: info
+  - name: admin
+components:
+  securitySchemes:
+    api_key:
+      type: apiKey
+      name: x-api-key
+      in: header
+  schemas:
+    Todo:
+      type: object
+      properties:
+        id:
+          type: string
+          format: uuid
+        state:
+          type: string
+          enum:
+            - OPEN
+            - IN PROGRESS
+            - DONE
+          default: OPEN
+        title:
+          type: string
+        finishedInDays:
+          type: integer
+          minimum: 0
+          exclusiveMinimum: true
+          default: 7
+        notificationsEmail:
+          type: string
+          format: email
+        description:
+          type: string
+        lastUpdate:
+          type: string
+          format: date-time
+      required:
+        - id
+        - state
+        - title
+        - finishedInDays
+        - notificationsEmail
+        - lastUpdate
+    AddTodo:
+      type: object
+      properties:
+        title:
+          type: string
+        finishedInDays:
+          type: integer
+          minimum: 0
+          exclusiveMinimum: true
+          default: 7
+        notificationsEmail:
+          type: string
+          format: email
+        description:
+          type: string
+      required:
+        - title
+        - finishedInDays
+        - notificationsEmail
+  parameters: {}
+paths:
+  /todos:
+    get:
+      summary: return list of todos
+      tags:
+        - admin
+      security:
+        - api_key: []
+      operationId: getTodos
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                type: array
+                items:
+                  $ref: '#/components/schemas/Todo'
+            text/calendar:
+              schema:
+                type: string
+    post:
+      summary: add new todo
+      tags:
+        - admin
+      security:
+        - api_key: []
+      operationId: addTodo
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: '#/components/schemas/AddTodo'
+      x-codegen-request-body-name: body
+      responses:
+        '201':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Todo'
+        '401':
+          description: you are not logged in
+          content: {}
+        '403':
+          description: you are not authorized to add todos
+          content: {}
+  /todos/{id}:
+    post:
+      summary: get a todo by its id
+      tags:
+        - admin
+      security:
+        - api_key: []
+      operationId: getTodoById
+      responses:
+        '200':
+          description: successful operation
+          content:
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Todo'
+        '401':
+          description: you are not logged in
+          content: {}
+        '403':
+          description: you are not authorized to add todos
+          content: {}
+    delete:
+      summary: delete a todo
+      tags:
+        - admin
+      security:
+        - api_key: []
+      operationId: removeTodo
+      responses:
+        '200':
+          description: successful operation
+          content: {}

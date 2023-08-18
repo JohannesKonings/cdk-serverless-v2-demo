@@ -13,7 +13,7 @@ export class MyApiRestApi extends RestApi<paths, operations> {
     super(scope, id, {
       ...props,
       apiName: 'MyApi',
-      definitionFileName: './src/definitions/myapi.yaml',
+      definitionFileName: './src/definitions/myapi-zod.yaml',
     });
   }
 
